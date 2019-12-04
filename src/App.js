@@ -3,23 +3,90 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      form: {
+        name: null,
+        age: null,
+        height: null,
+      },
+      accordionOpen: false,
+    }
+
+  }
+
+  // handleNameChange = (event) => {
+  //   this.setState({
+  //     name: event.target.value,
+  //   });
+  // }
+
+  // handleAgeChange = (event) => {
+  //   this.setState({
+  //     age: event.target.value,
+  //   });
+  // }
+
+  multiInputHandler = (event, inputKey) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        [inputKey]: event.target.value,
+      }
+    });
+  }
+
+  handleSubmitClick = (event) => {
+    console.log(this.state);
+    console.log(this.state['age']);
+  }
+
+  toggleAccordion = (event) => {
+    this.setState({
+      accordionOpen: !this.state.accordionOpen,
+    });
+  }
+
   render() {
+    let results = (
+      <div>
+        Recording:
+        <p>{this.state.form.name}</p>
+        <p>{this.state.form.age}</p>
+        <p>{this.state.form.height}</p>
+      </div>
+    );
+
+    if (this.state.accordionOpen === false) {
+      results = null;
+    }
+
     return (
+      
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div>
+          <button onClick={this.toggleAccordion}>Hide/Show Results</button>
+          {results}
+        </div>
+        <input
+          type="text"
+          placeholder="Name"
+          onChange={(event) => this.multiInputHandler(event, 'name')}
+        />
+        <input
+          type="number"
+          placeholder="Age"
+          onChange={(event) => this.multiInputHandler(event, 'age')}
+        />
+        <input
+          type="number"
+          placeholder="Height"
+          onChange={(event) => this.multiInputHandler(event, 'height')}
+        />
+
+        <button onClick={this.handleSubmitClick}>Submit</button>
       </div>
     );
   }
